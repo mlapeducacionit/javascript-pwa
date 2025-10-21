@@ -8,8 +8,6 @@ const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
 const toggleButton = document.getElementById('toggle-sidebar');
 const closeButton = document.getElementById('close-sidebar');
-console.log(closeButton);
-console.log(overlay);
 
 function openSidebar() {
   sidebar.classList.remove('-translate-x-full');
