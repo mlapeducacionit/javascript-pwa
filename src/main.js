@@ -1,4 +1,6 @@
+import Swal from 'sweetalert2';
 import './style.css'
+import handlerNotification from './utils/handler-notification';
 
 // ! ----------------------------------------
 // ! Menú
@@ -28,16 +30,22 @@ overlay.addEventListener('click', closeSidebar);
 // ! VARIABLES GLOBALES
 // ! ----------------------------------------
 
-const listadoProductos = [
+let listadoProductos = [
     { nombre: 'Carne', cantidad: 2, precio: 42.34 },
     { nombre: 'Leche', cantidad: 4, precio: 22.34 },
     { nombre: 'Pan', cantidad: 5, precio: 12.34 },
     { nombre: 'Fideos', cantidad: 3, precio: 2.34 },
-]
+  ]
+  
+let crearLista = true // Creo esta bandera para evitar que se vuelva a renderizar todo el array
+let ul
 
 function renderLista() {
-
-    let ul = document.createElement('ul')
+  
+    if (crearLista) {
+        console.log('Se crea el ul')
+        ul = document.createElement('ul')
+    }
 
     ul.innerHTML = ''
 
@@ -77,10 +85,85 @@ function renderLista() {
     
     document.getElementById('lista').appendChild(ul)
 
+    crearLista = false
+
 }
+
+// ! --------------------------------------
+// ! Configurar Listerner
+// ! --------------------------------------
+
+function configurarBotonIngresoProducto() {
+
+  // Ingreso del producto nuevo
+  document.getElementById('btn-entrada-producto').addEventListener('click', () => {
+    //debugger // <---- punto de quiebre | breakpoint
+    console.log('btn-entrada-producto')
+
+    const input = document.getElementById('ingreso-producto')
+    const producto = input.value
+    //debugger
+    console.log(producto);
+
+    // Falsy | Truthy
+    if (producto) {
+      listadoProductos.push( { nombre: producto, cantidad: 1, precio: 0 } )
+      renderLista()
+      input.value = ''
+    } else {
+      Swal.fire('Debe ingresar un producto válido!')
+    }
+  })
+
+}
+
+function configurarBotonBorradoProductos() {
+
+  document.getElementById('btn-borrar-productos').addEventListener('click', () => {
+    console.log('btn-borrar-productos')
+
+    /* if (confirm('¿Estás segudo que querés borrar toda tu super lista?')) {
+      listadoProductos = []
+      renderLista()
+    } */
+
+    /* Swal.fire({
+      title: "¿Estás seguro que queres borrar toda la super lista?",
+      text: "No vas a poder volver a atrás",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, borrala!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        listadoProductos = []
+        renderLista()
+
+        Swal.fire({
+          title: "Lista borrada!",
+          text: "La lista quedo sin ningún producto",
+          icon: "success"
+        });
+      }
+    }); */
+    
+    handlerNotification(() => {
+      listadoProductos = []
+      renderLista()
+    })
+
+  })
+
+}
+
+
 
 function start() {
     renderLista()
+    configurarBotonIngresoProducto()
+    configurarBotonBorradoProductos()
 }
 
 // ! Me aseguro que todo el HTML este disponible para trabajar con JS
