@@ -40,11 +40,37 @@ let listadoProductos = [
 let crearLista = true // Creo esta bandera para evitar que se vuelva a renderizar todo el array
 let ul
 
+// ! ----------------------------------------------------
+// ! Borrar Producto, Cambiar Cantidad y Cambiar Precio
+// ! ----------------------------------------------------
+
+function borrarProducto(indice) {
+  console.log(indice);
+
+  listadoProductos.splice(indice, 1)
+  renderLista()
+
+}
+
+function cambiarCantidad() {
+
+}
+
+function cambiarPrecio() {
+
+}
+
+
+// ! --------------------------------------
+// ! Render Lista
+// ! --------------------------------------
+
 function renderLista() {
   
     if (crearLista) {
         console.log('Se crea el ul')
         ul = document.createElement('ul')
+        ul.id = 'lista-productos'
     }
 
     ul.innerHTML = ''
@@ -74,8 +100,9 @@ function renderLista() {
                 <!-- Borrar producto -->
                  <span class="w-12 flex justify-center">
                   <button
-                    class="flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full w-10 h-10 shadow transition cursor-pointer ms-2"
-                    >
+                    data-indice="${indice}"
+                    class="btn-borrar flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full w-10 h-10 shadow transition cursor-pointer ms-2"
+                  >
                     <i class="material-icons">remove_shopping_cart</i>
                   </button>
                  </span>
@@ -88,6 +115,9 @@ function renderLista() {
     crearLista = false
 
 }
+
+
+
 
 // ! --------------------------------------
 // ! Configurar Listerner
@@ -149,7 +179,14 @@ function configurarBotonBorradoProductos() {
       }
     }); */
     
-    handlerNotification(() => {
+    const objetoMensajes = {
+      textoPrincipal: "¿Estás seguro que queres borrar toda la super lista?",
+      descripcion:  "No vas a poder volver a atrás",
+      textoSecundario: "Lista borrada!",
+      descripcionSecundaria: "La lista quedo sin ningún producto",
+    }
+
+    handlerNotification(objetoMensajes, () => {
       listadoProductos = []
       renderLista()
     })
@@ -158,12 +195,44 @@ function configurarBotonBorradoProductos() {
 
 }
 
+function configurarEventoLista() {
+  console.log('configurarEventoLista')
+
+  document.getElementById('lista-productos').addEventListener('click', (e) => {
+    // console.dir(e.target.parentElement) // El botón.
+
+    const objetoMensajes = {
+      textoPrincipal: "¿Estás seguro que queres borrar el producto?",
+      descripcion:  "No vas a poder volver a atrás",
+      textoSecundario: "Producto borrado!",
+      descripcionSecundaria: "El producto se borró correctamente",
+    }
+    
+    handlerNotification(objetoMensajes, () => {
+      if ( e.target.parentElement.classList.contains('btn-borrar')) {
+        console.log('Tengo el botón')
+
+        const indice = e.target.parentElement.dataset.indice
+        console.log(indice)
+
+        borrarProducto(indice)
+
+      } 
+    })
+
+    
+
+  })
+
+
+}
 
 
 function start() {
     renderLista()
     configurarBotonIngresoProducto()
     configurarBotonBorradoProductos()
+    configurarEventoLista()
 }
 
 // ! Me aseguro que todo el HTML este disponible para trabajar con JS

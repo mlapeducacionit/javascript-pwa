@@ -1,10 +1,10 @@
 import Swal from "sweetalert2";
 
-const handlerNotification = (callback) => {
+const handlerNotification = (objetoMensajes, callback) => {
 
     Swal.fire({
-      title: "¿Estás seguro que queres borrar toda la super lista?",
-      text: "No vas a poder volver a atrás",
+      title: objetoMensajes.textoPrincipal,
+      text: objetoMensajes.descripcion,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -19,8 +19,8 @@ const handlerNotification = (callback) => {
         callback() // () => { listadoProductos = []; renderLista() }
 
         Swal.fire({
-          title: "Lista borrada!",
-          text: "La lista quedo sin ningún producto",
+          title: objetoMensajes.textoSecundario, 
+          text: objetoMensajes.descripcionSecundaria, 
           icon: "success"
         });
       }
