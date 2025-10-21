@@ -1,6 +1,32 @@
 import './style.css'
 
 // ! ----------------------------------------
+// ! Menú
+// ! ----------------------------------------
+
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const toggleButton = document.getElementById('toggle-sidebar');
+const closeButton = document.getElementById('close-sidebar');
+console.log(closeButton);
+console.log(overlay);
+
+function openSidebar() {
+  sidebar.classList.remove('-translate-x-full');
+  overlay.classList.remove('hidden');
+}
+
+function closeSidebar() {
+  sidebar.classList.add('-translate-x-full');
+  overlay.classList.add('hidden');
+}
+
+toggleButton.addEventListener('click', openSidebar);
+closeButton.addEventListener('click', closeSidebar);
+overlay.addEventListener('click', closeSidebar);
+
+
+// ! ----------------------------------------
 // ! VARIABLES GLOBALES
 // ! ----------------------------------------
 
@@ -42,7 +68,7 @@ function renderLista() {
                 <!-- Borrar producto -->
                  <span class="w-12 flex justify-center">
                   <button
-                    class="flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full w-10 h-10 shadow transition"
+                    class="flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full w-10 h-10 shadow transition cursor-pointer ms-2"
                     >
                     <i class="material-icons">remove_shopping_cart</i>
                   </button>
