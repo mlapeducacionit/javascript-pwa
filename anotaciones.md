@@ -40,5 +40,3 @@ npm i json-server -D
 ```sh
 npm run server
 ```
-
-

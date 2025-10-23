@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2';
 import './style.css'
 import handlerNotification from './utils/handler-notification';
+import handlerHttp from './utils/handler-http';
 
 // ! ----------------------------------------
 // ! Menú
@@ -31,10 +32,10 @@ overlay.addEventListener('click', closeSidebar);
 // ! ----------------------------------------
 
 let listadoProductos = [
-    { nombre: 'Carne', cantidad: 2, precio: 42.34 },
+   /*  { nombre: 'Carne', cantidad: 2, precio: 42.34 },
     { nombre: 'Leche', cantidad: 4, precio: 22.34 },
     { nombre: 'Pan', cantidad: 5, precio: 12.34 },
-    { nombre: 'Fideos', cantidad: 3, precio: 2.34 },
+    { nombre: 'Fideos', cantidad: 3, precio: 2.34 }, */
 ]
   
 let crearLista = true // Creo esta bandera para evitar que se vuelva a renderizar todo el array
@@ -51,15 +52,6 @@ function borrarProducto(indice) {
   renderLista()
 
 }
-
-function cambiarCantidad() {
-
-}
-
-function cambiarPrecio() {
-
-}
-
 
 // ! --------------------------------------
 // ! Render Lista
@@ -115,9 +107,6 @@ function renderLista() {
     crearLista = false
 
 }
-
-
-
 
 // ! --------------------------------------
 // ! Configurar Listerner
@@ -261,13 +250,36 @@ function configurarEventoListaParaCantidad() {
 
 }
 
+async function peticionProductoBackend() {
 
-function start() {
+  try {
+
+    const url = 'http://localhost:8080/productos'
+
+    const productos = await handlerHttp(url)
+    
+    console.log(productos)
+    listadoProductos = productos
+
+  } catch (error) {
+    throw error
+  }
+
+}
+
+
+async function start() {
+    
+  try {
+    await peticionProductoBackend()
     renderLista()
     configurarBotonIngresoProducto()
     configurarBotonBorradoProductos()
     configurarEventoLista()
     configurarEventoListaParaCantidad()
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 // ! Me aseguro que todo el HTML este disponible para trabajar con JS
