@@ -35,7 +35,7 @@ let listadoProductos = [
     { nombre: 'Leche', cantidad: 4, precio: 22.34 },
     { nombre: 'Pan', cantidad: 5, precio: 12.34 },
     { nombre: 'Fideos', cantidad: 3, precio: 2.34 },
-  ]
+]
   
 let crearLista = true // Creo esta bandera para evitar que se vuelva a renderizar todo el array
 let ul
@@ -199,7 +199,8 @@ function configurarEventoLista() {
   console.log('configurarEventoLista')
 
   document.getElementById('lista-productos').addEventListener('click', (e) => {
-    // console.dir(e.target.parentElement) // El botón.
+    //console.dir(e.target.parentElement) // El botón.
+    //console.log( e.target.parentElement.classList.contains('btn-borrar') )
 
     const objetoMensajes = {
       textoPrincipal: "¿Estás seguro que queres borrar el producto?",
@@ -208,8 +209,8 @@ function configurarEventoLista() {
       descripcionSecundaria: "El producto se borró correctamente",
     }
     
-    handlerNotification(objetoMensajes, () => {
-      if ( e.target.parentElement.classList.contains('btn-borrar')) {
+    if ( e.target.parentElement.classList.contains('btn-borrar') ) {
+      handlerNotification(objetoMensajes, () => {
         console.log('Tengo el botón')
 
         const indice = e.target.parentElement.dataset.indice
@@ -217,8 +218,8 @@ function configurarEventoLista() {
 
         borrarProducto(indice)
 
-      } 
-    })
+      })
+    } 
 
     
 
