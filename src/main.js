@@ -90,12 +90,12 @@ function renderLista() {
                 <!-- Cantidad -->
                  <span class="w-24">
                    <label for="" class="block text-xs text-gray-500">Cantidad</label>
-                   <input type="text" value="${prod.cantidad}" class="mt-1 w-full border border-gray-300 rounded-md text-sm p-1 text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                   <input type="number" value="${prod.cantidad}" class="i-cantidad mt-1 w-full border border-gray-300 rounded-md text-sm p-1 text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                  </span>
                 <!-- Precio -->
-                <span class="w-24">
+                <span class="w-24 ms-2">
                    <label for="" class="block text-xs text-gray-500">Precio</label>
-                   <input type="text" value="${prod.precio}" class="mt-1 w-full border border-gray-300 rounded-md text-sm p-1 text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                   <input type="number" value="${prod.precio}" class="i-precio mt-1 w-full border border-gray-300 rounded-md text-sm p-1 text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                  </span>
                 <!-- Borrar producto -->
                  <span class="w-12 flex justify-center">
@@ -219,9 +219,42 @@ function configurarEventoLista() {
         borrarProducto(indice)
 
       })
-    } 
+    }     
 
-    
+  })
+
+}
+
+function configurarEventoListaParaCantidad() {
+
+  document.getElementById('lista-productos').addEventListener('change', e => {
+    console.log(e)
+
+    if ( e.target.classList.contains('i-precio') ) {
+      console.log('Modificar el input precio')
+      /* console.log(e.target.parentElement.parentElement) */
+      //console.dir(e.target.parentElement.parentElement.children[4].children[0]) // button
+      //const indice = e.target.parentElement.parentElement.children[4].children[0].dataset.indice // indice
+      // const listItem = e.target.parentElement.parentElement // li
+      const button = e.target.parentElement.parentElement.querySelector('button')
+      const indice = button.dataset.indice
+      const precio = e.target.value
+      // console.log(indice);
+      listadoProductos[indice].precio = Number(precio) /* casteo */
+      console.log(listadoProductos)
+  
+    }
+
+    if ( e.target.classList.contains('i-cantidad') ) {
+      console.log('Modificar el input cantidad')
+      const button = e.target.parentElement.parentElement.querySelector('button')
+      const indice = button.dataset.indice
+      const cantidad = e.target.value
+      // console.log(indice);
+     listadoProductos[indice].cantidad = Number(cantidad)
+     console.log(listadoProductos)
+
+    }
 
   })
 
@@ -234,6 +267,7 @@ function start() {
     configurarBotonIngresoProducto()
     configurarBotonBorradoProductos()
     configurarEventoLista()
+    configurarEventoListaParaCantidad()
 }
 
 // ! Me aseguro que todo el HTML este disponible para trabajar con JS
