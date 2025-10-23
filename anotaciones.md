@@ -54,3 +54,13 @@ window.navigator.serviceWorker.register('/sw.js')
 ```js
 window.navigator.serviceWorker.register('/src/sw.js',  { scope: '/' })
 ```
+
+## Trabajando con el Manifest
+
+<https://developer.mozilla.org/es/docs/Web/Progressive_web_apps/Manifest>
+<https://web.dev/articles/add-manifest?hl=es>
+
+## Generador Online de archivo Manifest (manifest.json)
+<https://manifest-gen.netlify.app/>
+
+![captura-de-app-de-generación](_ref/image.png)
