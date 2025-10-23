@@ -40,3 +40,17 @@ npm i json-server -D
 ```sh
 npm run server
 ```
+
+## Service Worker
+Archivo de js. Donde tiene que estar ubicado el archivo *sw.js* la raíz del proyecto. A la par del *index.html*. O sea en la raíz del sitio.
+
+```js
+window.navigator.serviceWorker.register('/sw.js')
+```
+
+
+> Podría colocarlo fuera de la carpeta raíz del proyecto (No es tan recomendable)
+
+```js
+window.navigator.serviceWorker.register('/src/sw.js',  { scope: '/' })
+```

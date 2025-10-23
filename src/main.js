@@ -267,10 +267,31 @@ async function peticionProductoBackend() {
 
 }
 
+// ! -------------------------------------
+// ! Registro de Service Worker
+// ! -------------------------------------
+
+async function registrarServiceWorker() {
+  if ('serviceWorker' in navigator) {
+
+    try {
+      const registro = await window.navigator.serviceWorker.register('/sw.js')
+      console.log('El Service Worker se registro correctamnte', registro)
+      
+    } catch (error) {
+      console.error('Erorr al registrar el Service Worker', error)
+    }
+
+  } else {
+    console.error('Service Worker no está disponible en navigator');
+  }
+}
+
 
 async function start() {
     
   try {
+    await registrarServiceWorker()
     await peticionProductoBackend()
     renderLista()
     configurarBotonIngresoProducto()
