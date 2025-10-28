@@ -103,4 +103,13 @@ Pueden tener de manera gratuita un servicio con 2 endpoint
 
 <https://mockapi.io/>
 
+## Auditar nuestra web
 
+<https://webhint.io/>
+
+```sh
+npx hint <url-web>
+npx hint https://maxi-javascript-pwa.netlify.app/
+```
+
+<https://webhint.io/docs/user-guide/>
