@@ -253,9 +253,11 @@ function configurarEventoListaParaCantidad() {
 async function peticionProductoBackend() {
 
   try {
-
-    const urlLocal = 'http://localhost:8080/productos'
-    const urlRemota = 'https://6643e84c6c6a65658708af06.mockapi.io/productos'
+    // Variables de entorno.
+    //console.log(import.meta.env.VITE_BACKEND_LOCAL)
+    //console.log(import.meta.env.VITE_BACKEND_REMOTO)
+    const urlLocal = import.meta.env.VITE_BACKEND_LOCAL
+    const urlRemota = import.meta.env.VITE_BACKEND_REMOTO
 
     const productos = await handlerHttp(urlRemota)
     
