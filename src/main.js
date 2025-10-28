@@ -254,9 +254,10 @@ async function peticionProductoBackend() {
 
   try {
 
-    const url = 'http://localhost:8080/productos'
+    const urlLocal = 'http://localhost:8080/productos'
+    const urlRemota = 'https://6643e84c6c6a65658708af06.mockapi.io/productos'
 
-    const productos = await handlerHttp(url)
+    const productos = await handlerHttp(urlRemota)
     
     console.log(productos)
     listadoProductos = productos

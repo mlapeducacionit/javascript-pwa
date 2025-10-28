@@ -77,3 +77,30 @@ window.navigator.serviceWorker.register('/src/sw.js',  { scope: '/' })
 
 <https://marketplace.visualstudio.com/items?itemName=PWABuilder.pwa-studio>
 <https://pwabuilder.com/>
+
+## Para previsualizar el build localmente (Antes de subir a Netlify)
+
+```sh
+npm run build # crea la carpeta dist
+```
+
+## Ver el resultado en ejecución antes de verlo funcionando en Netlify
+
+```sh
+npm run preview # tiene que existir dist
+```
+
+## Librería (plugin) para copias estaticas con vite
+
+<https://www.npmjs.com/package/vite-plugin-static-copy>
+
+```sh
+npm i vite-plugin-static-copy -D
+```
+
+## Un servidor backend con un REST API en la nube para hacer pruebas
+Pueden tener de manera gratuita un servicio con 2 endpoint
+
+<https://mockapi.io/>
+
+
