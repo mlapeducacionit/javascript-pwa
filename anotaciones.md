@@ -58,9 +58,17 @@ window.navigator.serviceWorker.register('/src/sw.js',  { scope: '/' })
 ## Trabajando con el Manifest
 
 <https://developer.mozilla.org/es/docs/Web/Progressive_web_apps/Manifest>
+<https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest>
 <https://web.dev/articles/add-manifest?hl=es>
+<https://www.w3.org/TR/appmanifest/>
 
 ## Generador Online de archivo Manifest (manifest.json)
-<https://manifest-gen.netlify.app/>
+<https://progressier.com/pwa-manifest-generator>
 
-![captura-de-app-de-generación](_ref/image.png)
+## Iconos enmascarables
+
+<https://web.dev/articles/maskable-icon?utm_source=devtools&utm_campaign=stable&hl=es>
+
+## Workbox
+
+<https://web.dev/learn/pwa/workbox?hl=es-419>
