@@ -72,3 +72,8 @@ window.navigator.serviceWorker.register('/src/sw.js',  { scope: '/' })
 ## Workbox
 
 <https://web.dev/learn/pwa/workbox?hl=es-419>
+
+## Extensión y herramienta para revisar PWA
+
+<https://marketplace.visualstudio.com/items?itemName=PWABuilder.pwa-studio>
+<https://pwabuilder.com/>
