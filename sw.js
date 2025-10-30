@@ -38,6 +38,20 @@ self.addEventListener('fetch', e => {
             .w-100 { width: 100%;}
         `, { headers: { 'content-type': 'text/css' }})
         e.respondWith(respuesta) */
+    } else if (url.includes('super.jpg')) {
+
+        console.warn('Me di cuenta que estás pidiendo el hero')
+        //let respuesta = fetch('https://images.unsplash.com/photo-1515706886582-54c73c5eaf41?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170')
+        let respuesta = fetch('https://i.pinimg.com/1200x/e1/56/f0/e156f095fc65d1796696e136c7dc3bdc.jpg',  { mode: 'no-cors' } )
+                            .catch(error => console.warn('ERROR EN FETCH IMAGEN', error))
+        e.respondWith(respuesta)
+    } else if (url.includes('main.js')) { 
+        console.warn('Se encontré el archivo js')
+
+       /*  let respuesta = fetch('https://stupendous-youtiao-8cd87f.netlify.app/src/main.js') */
+
+       /*  e.respondWith(respuesta) */
+
     } else {
         e.respondWith(respuesta) // El SW se encarga de responder
     }

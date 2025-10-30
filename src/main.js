@@ -290,6 +290,54 @@ async function registrarServiceWorker() {
   }
 }
 
+function testCache() {
+  // https://caniuse.com/?search=caches // ! Revisamos que los navegadores tengan disponible la cache
+
+
+  /* Creando un espacio de cache */
+  if (window.caches) {
+    console.log('El browser soporta caches')
+    caches.open('prueba-1')
+    caches.open('prueba-2')
+    caches.open('prueba-3')
+    
+    /* Comprobamos si una cache existe */
+    caches.has('prueba-2').then(rta => console.log(rta))
+    /* caches.has('prueba-3').then(alert) */
+   /*  caches.has('prueba-1').then(console.log) */
+
+   /* caches.delete('prueba-1').then(console.log) */
+   caches.delete('prueba-1').then(rta => {
+      console.warn("/* Borrar un cache */")
+      console.log(rta)
+    })
+  }
+
+  /* listo Todas las caches */
+  caches.keys().then(console.log)
+
+  
+  caches.open('cache-v1.1').then(( cache) => {
+    console.log(cache)
+    /* Agrego un recurso a la cache */
+    //cache.add('./index.html')
+
+    /* Agrego varios recursos a la cache */
+    cache.addAll([
+      './index.html',
+      './src/style.css',
+      './images/super.jpg'
+    ]).then(()=> {
+      console.log('Recursos agregados');
+
+      /* Borro recurso de la cache */
+      cache.delete('./images/super.jpg').then(console.log)
+
+    })
+  })
+
+}
+
 
 async function start() {
     
@@ -301,6 +349,7 @@ async function start() {
     configurarBotonBorradoProductos()
     configurarEventoLista()
     configurarEventoListaParaCantidad()
+    testCache()
   } catch (error) {
     console.error(error)
   }
