@@ -9,3 +9,14 @@
 .w-80 { width: 80%;}
 .w-90 { width: 90%;}
 .w-100 { width: 100%;}
+
+.hero-imagen {
+    height: 200px;
+}
+
+.hero-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-height: 200px;
+}
