@@ -2,6 +2,7 @@ import Swal from 'sweetalert2';
 import './style.css'
 import handlerNotification from './utils/handler-notification';
 import handlerHttp from './utils/handler-http';
+import { guardarListaProductos } from './utils/handler-local-storage';
 
 // ! ----------------------------------------
 // ! Menú
@@ -57,15 +58,32 @@ function borrarProducto(indice) {
 // ! Render Lista
 // ! --------------------------------------
 
-function renderLista() {
+async function renderLista() {
+
+    /* Obtener la plantilla -> (petición fetch) */
+    const urlPlantilla = 'templates/plantilla-lista.hbs'
+    const res = await fetch(urlPlantilla)
+    if ( !res.ok ) {
+      throw new Error('No se pudo acceder a la plantilla')
+    }
+    const plantilla = await res.text()
+    // Ya tengo la plantilla
+    console.log(plantilla)
+    const templateHandlebars = Handlebars.compile(plantilla)
+    console.log(templateHandlebars)
+
+    const html = templateHandlebars({listadoProductos}) // Le tengo que pasar objetos
+    console.log(html)
+
+     document.getElementById('lista').innerHTML = html
   
-    if (crearLista) {
+   /*  if (crearLista) {
         console.log('Se crea el ul')
         ul = document.createElement('ul')
         ul.id = 'lista-productos'
-    }
+    } */
 
-    ul.innerHTML = ''
+    /* ul.innerHTML = ''
 
     listadoProductos.forEach( ( prod, indice ) => {
 
@@ -102,9 +120,9 @@ function renderLista() {
         `
     })
     
-    document.getElementById('lista').appendChild(ul)
+    document.getElementById('lista').appendChild(ul) */
 
-    crearLista = false
+  /*   crearLista = false */
 
 }
 
@@ -260,7 +278,9 @@ async function peticionProductoBackend() {
     const urlRemota = import.meta.env.VITE_BACKEND_REMOTO
 
     const productos = await handlerHttp(urlRemota)
-    
+    // Se supone que los productos están
+    // Guardar la lista de productos actual en el localStorage (persisto en el navegador)
+    guardarListaProductos(productos)
     console.log(productos)
     listadoProductos = productos
 
@@ -344,7 +364,7 @@ async function start() {
   try {
     await registrarServiceWorker()
     await peticionProductoBackend()
-    renderLista()
+    await renderLista()
     configurarBotonIngresoProducto()
     configurarBotonBorradoProductos()
     configurarEventoLista()
