@@ -31,7 +31,8 @@ self.addEventListener('install', e => {
         // Guardo todos los archivos estaticos (tienen número de versión)
         // ---> Esos recursos también se llama de APP SHELL
         return cache.addAll([
-            'https://fonts.googleapis.com/icon?family=Material+Icons'
+            'https://fonts.googleapis.com/icon?family=Material+Icons',
+            'https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js'
         ])
 
     })
