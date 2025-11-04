@@ -349,7 +349,7 @@ async function start() {
     configurarBotonBorradoProductos()
     configurarEventoLista()
     configurarEventoListaParaCantidad()
-    testCache()
+    // testCache()
   } catch (error) {
     console.error(error)
   }
