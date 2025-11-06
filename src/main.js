@@ -4,6 +4,29 @@ import handlerNotification from './utils/handler-notification';
 import handlerHttp from './utils/handler-http';
 import { guardarListaProductos } from './utils/handler-local-storage';
 
+//console.log(import.meta.env)
+// ! ----------------------------------------
+// ! Constantes
+// ! ----------------------------------------
+let apiUrl =  controlarAmbiente()
+//console.log(apiUrl)
+
+function controlarAmbiente() {
+  let apiUrl = ''
+  if ( import.meta.env.DEV ) {
+    //console.log('Estoy en desarrollo')
+    //console.log(import.meta.env.VITE_BACKEND_LOCAL)
+    apiUrl = import.meta.env.VITE_BACKEND_LOCAL
+  } else {
+    //console.log('Estoy en producción')
+    //console.log(import.meta.env.VITE_BACKEND_REMOTO)
+    apiUrl = import.meta.env.VITE_BACKEND_REMOTO
+  }
+  return apiUrl
+}
+
+
+
 // ! ----------------------------------------
 // ! Menú
 // ! ----------------------------------------
@@ -46,11 +69,24 @@ let ul
 // ! Borrar Producto, Cambiar Cantidad y Cambiar Precio
 // ! ----------------------------------------------------
 
-function borrarProducto(indice) {
-  console.log(indice);
+async function borrarProducto(id) {
+  console.log(id);
 
-  listadoProductos.splice(indice, 1)
-  renderLista()
+  try {
+    // ! 1. Borrado en el backend
+    const options = {
+      method: 'DELETE'
+    }
+    const urlEliminacion = apiUrl + id
+    await handlerHttp(urlEliminacion, options)
+
+    // ! 2. Borrado en el frontend
+    const indice = listadoProductos.findIndex(prod => prod.id === id)
+    listadoProductos.splice(indice, 1)
+    renderLista()
+  } catch (error) {
+    console.error(error)
+  }
 
 }
 
@@ -68,61 +104,14 @@ async function renderLista() {
     }
     const plantilla = await res.text()
     // Ya tengo la plantilla
-    console.log(plantilla)
+    //console.log(plantilla)
     const templateHandlebars = Handlebars.compile(plantilla)
-    console.log(templateHandlebars)
+    // console.log(templateHandlebars)
 
     const html = templateHandlebars({listadoProductos}) // Le tengo que pasar objetos
-    console.log(html)
+    //console.log(html)
 
      document.getElementById('lista').innerHTML = html
-  
-   /*  if (crearLista) {
-        console.log('Se crea el ul')
-        ul = document.createElement('ul')
-        ul.id = 'lista-productos'
-    } */
-
-    /* ul.innerHTML = ''
-
-    listadoProductos.forEach( ( prod, indice ) => {
-
-        ul.innerHTML += `
-            <li class="flex items-center justify-between bg-white rouded-lg shadow p-3 mb-2 hover:bg-gray-50 transition">
-                <!-- Icono de producto -->
-                 <span class="flex items-center justify-center w-10 text-indigo-600">
-                  <i class="material-icons text-2xl">shopping_cart</i>
-                 </span>
-                <!-- Nombre de producto -->
-                 <span class="flex-1 text-gray-800 font-medium truncate w-32">
-                  ${prod.nombre}
-                 </span>
-                <!-- Cantidad -->
-                 <span class="w-24">
-                   <label for="" class="block text-xs text-gray-500">Cantidad</label>
-                   <input type="number" value="${prod.cantidad}" class="i-cantidad mt-1 w-full border border-gray-300 rounded-md text-sm p-1 text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                 </span>
-                <!-- Precio -->
-                <span class="w-24 ms-2">
-                   <label for="" class="block text-xs text-gray-500">Precio</label>
-                   <input type="number" value="${prod.precio}" class="i-precio mt-1 w-full border border-gray-300 rounded-md text-sm p-1 text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                 </span>
-                <!-- Borrar producto -->
-                 <span class="w-12 flex justify-center">
-                  <button
-                    data-indice="${indice}"
-                    class="btn-borrar flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-full w-10 h-10 shadow transition cursor-pointer ms-2"
-                  >
-                    <i class="material-icons">remove_shopping_cart</i>
-                  </button>
-                 </span>
-              </li>
-        `
-    })
-    
-    document.getElementById('lista').appendChild(ul) */
-
-  /*   crearLista = false */
 
 }
 
@@ -133,7 +122,7 @@ async function renderLista() {
 function configurarBotonIngresoProducto() {
 
   // Ingreso del producto nuevo
-  document.getElementById('btn-entrada-producto').addEventListener('click', () => {
+  document.getElementById('btn-entrada-producto').addEventListener('click', async () => {
     //debugger // <---- punto de quiebre | breakpoint
     console.log('btn-entrada-producto')
 
@@ -144,7 +133,19 @@ function configurarBotonIngresoProducto() {
 
     // Falsy | Truthy
     if (producto) {
-      listadoProductos.push( { nombre: producto, cantidad: 1, precio: 0 } )
+      const productoNuevo =  { nombre: producto, cantidad: 1, precio: 0 }
+      // ! 1. Ingreso en el backend
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(productoNuevo)
+      }
+      const productoCreado = await handlerHttp(apiUrl, options)
+
+      // ! 2. Ingreso en el frontend
+      listadoProductos.push( productoCreado )
       renderLista()
       input.value = ''
     } else {
@@ -158,33 +159,6 @@ function configurarBotonBorradoProductos() {
 
   document.getElementById('btn-borrar-productos').addEventListener('click', () => {
     console.log('btn-borrar-productos')
-
-    /* if (confirm('¿Estás segudo que querés borrar toda tu super lista?')) {
-      listadoProductos = []
-      renderLista()
-    } */
-
-    /* Swal.fire({
-      title: "¿Estás seguro que queres borrar toda la super lista?",
-      text: "No vas a poder volver a atrás",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, borrala!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        
-        listadoProductos = []
-        renderLista()
-
-        Swal.fire({
-          title: "Lista borrada!",
-          text: "La lista quedo sin ningún producto",
-          icon: "success"
-        });
-      }
-    }); */
     
     const objetoMensajes = {
       textoPrincipal: "¿Estás seguro que queres borrar toda la super lista?",
@@ -194,8 +168,25 @@ function configurarBotonBorradoProductos() {
     }
 
     handlerNotification(objetoMensajes, () => {
-      listadoProductos = []
-      renderLista()
+
+      try {
+        // ! 1. Borrado en el backend
+        listadoProductos.forEach( async (producto) => {
+          const options = {
+            method: 'DELETE'
+          }
+          const urlEliminacion = apiUrl + producto.id
+          await handlerHttp(urlEliminacion, options)
+
+        })
+
+        // ! 2. Borrado en el frontend
+        listadoProductos = []
+        renderLista()
+      } catch (error) {
+        console.error(error)
+      }
+
     })
 
   })
@@ -206,8 +197,7 @@ function configurarEventoLista() {
   console.log('configurarEventoLista')
 
   document.getElementById('lista-productos').addEventListener('click', (e) => {
-    //console.dir(e.target.parentElement) // El botón.
-    //console.log( e.target.parentElement.classList.contains('btn-borrar') )
+
 
     const objetoMensajes = {
       textoPrincipal: "¿Estás seguro que queres borrar el producto?",
@@ -239,10 +229,6 @@ function configurarEventoListaParaCantidad() {
 
     if ( e.target.classList.contains('i-precio') ) {
       console.log('Modificar el input precio')
-      /* console.log(e.target.parentElement.parentElement) */
-      //console.dir(e.target.parentElement.parentElement.children[4].children[0]) // button
-      //const indice = e.target.parentElement.parentElement.children[4].children[0].dataset.indice // indice
-      // const listItem = e.target.parentElement.parentElement // li
       const button = e.target.parentElement.parentElement.querySelector('button')
       const indice = button.dataset.indice
       const precio = e.target.value
@@ -271,17 +257,14 @@ function configurarEventoListaParaCantidad() {
 async function peticionProductoBackend() {
 
   try {
-    // Variables de entorno.
-    //console.log(import.meta.env.VITE_BACKEND_LOCAL)
-    //console.log(import.meta.env.VITE_BACKEND_REMOTO)
-    const urlLocal = import.meta.env.VITE_BACKEND_LOCAL
-    const urlRemota = import.meta.env.VITE_BACKEND_REMOTO
 
-    const productos = await handlerHttp(urlRemota)
+
+    const productos = await handlerHttp(apiUrl)
+    console.log(productos)
     // Se supone que los productos están
     // Guardar la lista de productos actual en el localStorage (persisto en el navegador)
     guardarListaProductos(productos)
-    console.log(productos)
+    //console.log(productos)
     listadoProductos = productos
 
   } catch (error) {
@@ -310,55 +293,6 @@ async function registrarServiceWorker() {
   }
 }
 
-function testCache() {
-  // https://caniuse.com/?search=caches // ! Revisamos que los navegadores tengan disponible la cache
-
-
-  /* Creando un espacio de cache */
-  if (window.caches) {
-    console.log('El browser soporta caches')
-    caches.open('prueba-1')
-    caches.open('prueba-2')
-    caches.open('prueba-3')
-    
-    /* Comprobamos si una cache existe */
-    caches.has('prueba-2').then(rta => console.log(rta))
-    /* caches.has('prueba-3').then(alert) */
-   /*  caches.has('prueba-1').then(console.log) */
-
-   /* caches.delete('prueba-1').then(console.log) */
-   caches.delete('prueba-1').then(rta => {
-      console.warn("/* Borrar un cache */")
-      console.log(rta)
-    })
-  }
-
-  /* listo Todas las caches */
-  caches.keys().then(console.log)
-
-  
-  caches.open('cache-v1.1').then(( cache) => {
-    console.log(cache)
-    /* Agrego un recurso a la cache */
-    //cache.add('./index.html')
-
-    /* Agrego varios recursos a la cache */
-    cache.addAll([
-      './index.html',
-      './src/style.css',
-      './images/super.jpg'
-    ]).then(()=> {
-      console.log('Recursos agregados');
-
-      /* Borro recurso de la cache */
-      cache.delete('./images/super.jpg').then(console.log)
-
-    })
-  })
-
-}
-
-
 async function start() {
     
   try {
@@ -369,7 +303,6 @@ async function start() {
     configurarBotonBorradoProductos()
     configurarEventoLista()
     configurarEventoListaParaCantidad()
-    // testCache()
   } catch (error) {
     console.error(error)
   }

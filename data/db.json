@@ -1,8 +1,22 @@
 {
   "productos": [
-    { "nombre": "Carne", "cantidad": 2, "precio": 42.34 },
-    { "nombre": "Leche", "cantidad": 4, "precio": 22.34 },
-    { "nombre": "Pan", "cantidad": 5, "precio": 12.34 },
-    { "nombre": "Fideos", "cantidad": 3, "precio": 2.34 }
+    {
+      "id": "1",
+      "nombre": "Carne",
+      "cantidad": 2,
+      "precio": 42.34
+    },
+    {
+      "id": "2",
+      "nombre": "Leche",
+      "cantidad": 4,
+      "precio": 22.34
+    },
+    {
+      "id": "3",
+      "nombre": "Pan",
+      "cantidad": 5,
+      "precio": 12.34
+    }
   ]
 }

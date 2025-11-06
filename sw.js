@@ -74,21 +74,29 @@ self.addEventListener('fetch', e => {
 
     let { url, method } =  e.request
 
-    const respuesta = caches.match(e.request).then( res => {
+    if ( method === 'GET' && !url.includes('/productos') ) {
+
+        const respuesta = caches.match(e.request).then( res => {
 
         if ( res ) {
             console.log('EXISTE: el recurso existe en la cache', url)
             return res
         }
-        console.error('NO EXISTE: el recurso no existe en el cache', url)
+        console.warn('NO EXISTE: el recurso no existe en el cache', url)
 
         return fetch(e.request).then( nuevaRespuesta => {
             caches.open(CACHE_DYNAMIC_NAME).then( cache => {
                 cache.put(e.request, nuevaRespuesta)
             })
-            return nuevaRespuesta.clone()
-        })    
-    })
+                return nuevaRespuesta.clone()
+            })    
+        })
+        
+        e.respondWith(respuesta)
+
+    } else {
+        console.warn('BYPASS', method, url)
+    }
+
     
-    e.respondWith(respuesta)
 })
