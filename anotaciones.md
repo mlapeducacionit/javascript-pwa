@@ -113,3 +113,41 @@ npx hint https://maxi-javascript-pwa.netlify.app/
 ```
 
 <https://webhint.io/docs/user-guide/>
+
+## Notificaciones Push
+
+<https://pusher.com/tutorials/push-notifications-node-service-workers/#set-up-the-client>
+
+## Servidor de Web Push
+
+<https://github.com/web-push-libs/web-push>
+
+## Es instalar localmente el WEB PUSH (App)
+
+```sh
+npm i web-push -g
+```
+
+### Generar VAPID KEYS
+
+```sh
+web-push generate-vapid-keys --json
+```
+
+```json
+{"publicKey":"BKAHBa3mYDN166DrS8nJaTs57nh5fHUwmSlC21JsL-lDztdS45UipP2ulV3j79sRGfprh2JGJbmT6mt0zQgXAPQ","privateKey":"gV7VJ16DD4dP1btsm8WT3vo1UwVn76tP_WA6QZrt9gk"}
+```
+
+### Setear clave pública vapid-keys:publicKey en PWA
+
+### Suscribirme en la PWA
+
+```json
+{"endpoint":"https://fcm.googleapis.com/fcm/send/fyc3febDPOk:APA91bFOpDicCYIm8iegTFQfZTrSIMen5GMW-gvDPW9AEqHORK-GgELFYgmn_TiZALoE2LmapiAid_Bh4tH5Rxya5C58xpH8ifZpx6Yn4b5Id8kq-mMzfqngcoUfQ827-E0ETod_qfKM","expirationTime":null,"keys":{"p256dh":"BEBkLejoNXoMENdLSLtQBMXlXqkA2BJZ99R8SCcnolux4ttpQhzK4HgY2gFG3XBEMcai4LUjEaF2r32MSucWHgs","auth":"iwe2tNFkeZvKUgI_6_3BFg"}}
+```
+
+### Enviar la notificación push
+
+```sh
+web-push send-notification --endpoint="https://fcm.googleapis.com/fcm/send/fyc3febDPOk:APA91bFOpDicCYIm8iegTFQfZTrSIMen5GMW-gvDPW9AEqHORK-GgELFYgmn_TiZALoE2LmapiAid_Bh4tH5Rxya5C58xpH8ifZpx6Yn4b5Id8kq-mMzfqngcoUfQ827-E0ETod_qfKM" --key="BEBkLejoNXoMENdLSLtQBMXlXqkA2BJZ99R8SCcnolux4ttpQhzK4HgY2gFG3XBEMcai4LUjEaF2r32MSucWHgs" --auth="iwe2tNFkeZvKUgI_6_3BFg" --payload="Hola!!! mensaje desde webpush" --ttl=0 --vapid-subject="mailto: mlapeducacionit@gmail.com" --vapid-pubkey="BIHxACL1dVoecKSiK88CUzVprI5xj8asoTpwxtOcMPDtHWo2Tz9gHd-9EXiNWo6uOOAf7kpPWSdzQOubCrtAcKw" --vapid-pvtkey="aLJ_770w0IDXihZtOsBbytnht0liugeWWUGVEaHLCRE"
+``` 
