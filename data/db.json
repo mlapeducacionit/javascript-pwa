@@ -3,7 +3,7 @@
     {
       "id": "1",
       "nombre": "Carne",
-      "cantidad": 2,
+      "cantidad": 5,
       "precio": 42.34
     },
     {
@@ -15,8 +15,14 @@
     {
       "id": "3",
       "nombre": "Pan",
-      "cantidad": 5,
+      "cantidad": 50,
       "precio": 12.34
+    },
+    {
+      "id": "4",
+      "nombre": "Fideos",
+      "cantidad": 3,
+      "precio": 2.34
     }
   ]
 }

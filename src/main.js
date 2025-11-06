@@ -230,8 +230,21 @@ function configurarEventoListaParaCantidad() {
     if ( e.target.classList.contains('i-precio') ) {
       console.log('Modificar el input precio')
       const button = e.target.parentElement.parentElement.querySelector('button')
-      const indice = button.dataset.indice
+      const id = button.dataset.indice
+      const indice = listadoProductos.findIndex( prod => prod.id === id )
       const precio = e.target.value
+      // ! 1. Actualizo en el backend
+      const urlEdicion = apiUrl + id
+      const options = {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ precio: Number(precio) })
+      }
+      // Actualizo en el backend
+      handlerHttp(urlEdicion, options)
+      // ! 1. Actualizo en el frontend
       // console.log(indice);
       listadoProductos[indice].precio = Number(precio) /* casteo */
       console.log(listadoProductos)
@@ -241,8 +254,22 @@ function configurarEventoListaParaCantidad() {
     if ( e.target.classList.contains('i-cantidad') ) {
       console.log('Modificar el input cantidad')
       const button = e.target.parentElement.parentElement.querySelector('button')
-      const indice = button.dataset.indice
+      const id = button.dataset.indice
+      const indice = listadoProductos.findIndex( prod => prod.id === id )
       const cantidad = e.target.value
+      // ! 1. Actualizo en el backend
+      const urlEdicion = apiUrl + id
+      const options = {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ cantidad: Number(cantidad) })
+      }
+      // Actualizo en el backend
+      handlerHttp(urlEdicion, options)
+      // ! 1. Actualizo en el frontend
+
       // console.log(indice);
      listadoProductos[indice].cantidad = Number(cantidad)
      console.log(listadoProductos)
