@@ -100,3 +100,14 @@ self.addEventListener('fetch', e => {
 
     
 })
+
+// Evento push -> recibe las notificaciones push
+// https://developer.mozilla.org/es/docs/Web/API/Notification
+self.addEventListener('push', e => {
+    console.log('Push recibido...')
+
+    const data = e.data.text()
+    console.log('Push data: ', data)
+
+ 
+})

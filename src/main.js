@@ -310,6 +310,19 @@ async function registrarServiceWorker() {
     try {
       const registro = await window.navigator.serviceWorker.register('/sw.js')
       console.log('El Service Worker se registro correctamnte', registro)
+
+      //initialiseUI(registro)
+
+      // Pedimos permiso para que el sistema operativo nos envie notificaciones
+      Notification.requestPermission(async result => {
+        if ( result === 'granted' ) {
+          const registration = await navigator.serviceWorker.ready
+          //registration.showNotification('Gracias por permitir las notificaciones!')
+          console.log(registration)
+        } else {
+          console.error('El usuario no acepto recibir notificaciones')
+        }
+      })
       
     } catch (error) {
       console.error('Erorr al registrar el Service Worker', error)
